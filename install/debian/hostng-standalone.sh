@@ -18,3 +18,11 @@ mkdir /etc/nginx/sites-available
 mkdir /etc/nginx/sites-enabled
 mkdir /etc/nginx/ssl
 openssl req -nodes -subj "/C=RS/ST=Serbial/L=Belgrade/O=Cubes/CN=www.cubes.rs" -x509 -newkey rsa:4096 -keyout /etc/nginx/ssl/server-key.pem -out /etc/nginx/ssl/server-cert.pem -days 3650
+wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/nginx.conf
+wget -O /etc/nginx/conf.d/default.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/default.conf
+wget -O /etc/nginx/conf.d/status.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/status.conf
+wget -O /etc/nginx/conf.d/fastcgi_cache.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/fastcgi_cache.conf
+systemctl restart nginx
+apt-get install mariadb-server
+systemctl enable mariadb
+wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
