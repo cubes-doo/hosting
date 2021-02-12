@@ -33,7 +33,16 @@ systemctl enable mariadb
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
 wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
 systemctl restart mariadb
+mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' IDENTIFIED BY '********' WITH GRANT OPTION;"
+mysql -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '********';"
+mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%'"
+mysql -e "CREATE USER backup@localhost IDENTIFIED BY '********';"
+mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
+mysql -e "FLUSH PRIVILEGES;"
 wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-languages.tar.gz
 tar -xzf phpMyAdmin-5.0.4-all-languages.tar.gz
 mv phpMyAdmin-5.0.4-all-languages /usr/share/phpmyadmin
-cp /usr/share/phpmyadmin/config.sample.inc.php /usr/share/phpmyadmin/config.inc.php
+wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
+mkdir /usr/share/phpmyadmin/tmp
+chmod 777 /usr/share/phpmyadmin/tmp
