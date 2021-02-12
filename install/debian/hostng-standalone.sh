@@ -1,6 +1,7 @@
 apt-get -y update
 apt-get -y upgrade
 apt-get -y install locales-all
+
 apt-get -y install apt-transport-https lsb-release ca-certificates curl
 curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -9,6 +10,7 @@ apt-get -y install php7.4 php7.4-amqp php7.4-bcmath php7.4-bz2 php7.4-cli php7.4
 wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php/fpm/pool.d/www.conf
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
+
 apt-get -y install curl gnupg2 ca-certificates lsb-release
 echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list
@@ -28,10 +30,11 @@ wget -O /usr/share/nginx/html/index.html https://raw.githubusercontent.com/cubes
 echo -e "\ntmpfs /var/cache/nginx tmpfs defaults,size=4G 0 0\n" >> /etc/fstab
 mount /var/cache/nginx
 systemctl restart nginx
+
 apt-get install mariadb-server
-systemctl enable mariadb
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
 wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
+systemctl enable mariadb
 systemctl restart mariadb
 mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' IDENTIFIED BY '********' WITH GRANT OPTION;"
@@ -40,9 +43,11 @@ mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO
 mysql -e "CREATE USER backup@localhost IDENTIFIED BY '********';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
+
 wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-languages.tar.gz
 tar -xzf phpMyAdmin-5.0.4-all-languages.tar.gz
 mv phpMyAdmin-5.0.4-all-languages /usr/share/phpmyadmin
+rm phpMyAdmin-5.0.4-all-languages.tar.gz
 wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
 mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
