@@ -51,3 +51,9 @@ rm phpMyAdmin-5.0.4-all-languages.tar.gz
 wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
 mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
+
+apt-get -y install vsftpd libpam-pwdfile
+mkdir -p /etc/vsftpd/users
+wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/vsftpd.conf
+systemctl enable vsftpd
+systemctl restart vsftpd
