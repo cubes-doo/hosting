@@ -55,5 +55,6 @@ chmod 777 /usr/share/phpmyadmin/tmp
 apt-get -y install vsftpd libpam-pwdfile
 mkdir -p /etc/vsftpd/users
 wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/vsftpd.conf
+wget -O /etc/pam.d/vsftpd https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/pam.d/vsftpd
 systemctl enable vsftpd
 systemctl restart vsftpd
