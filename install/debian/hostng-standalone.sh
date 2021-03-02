@@ -1,8 +1,9 @@
 apt-get -y update
 apt-get -y upgrade
+
 apt-get -y install locales-all
 
-wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssd/sshd_config
+wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssh/sshd_config
 systemctl restart sshd
 
 apt-get -y install apt-transport-https lsb-release ca-certificates curl
