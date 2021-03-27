@@ -3,6 +3,10 @@
 skip_name_resolve
 max_connections			= 3000
 
+#tmp table tunning
+tmp_table_size=2G
+tmp_memory_table_size=2G
+max_heap_table_size=2G
 
 #innodb tunning
 innodb_buffer_pool_size		= 16G

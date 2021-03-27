@@ -7,7 +7,13 @@ apt-get -y install apt-transport-https lsb-release ca-certificates curl
 curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt-get -y update
-apt-get -y install php7.4-amqp php7.4-bcmath php7.4-bz2 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-fpm php7.4-gd php7.4-http php7.4-igbinary php7.4-imagick php7.4-imap php7.4-intl php7.4-json php7.4-ldap php7.4-mbstring php7.4-memcache php7.4-memcached php7.4-mongodb php7.4-mysql php7.4-oauth php7.4-odbc php7.4-opcache php7.4-phpdbg php7.4-psr php7.4-readline php7.4-redis php7.4-soap php7.4-solr php7.4-sqlite3 php7.4-ssh2 php7.4-uploadprogress php7.4-uuid php7.4-xdebug php7.4-xml php7.4-xmlrpc php7.4-xsl php7.4-yaml php7.4-zip
+apt-get -y install php7.4-amqp php7.4-bcmath php7.4-bz2 php7.4-cli php7.4-common 
+apt-get -y install php7.4-curl php7.4-dev php7.4-fpm php7.4-gd php7.4-http php7.4-igbinary 
+apt-get -y install php7.4-imagick php7.4-imap php7.4-intl php7.4-json php7.4-ldap php7.4-mbstring 
+apt-get -y install php7.4-memcache php7.4-memcached php7.4-mongodb php7.4-mysql php7.4-oauth 
+apt-get -y install php7.4-odbc php7.4-opcache php7.4-phpdbg php7.4-psr php7.4-readline php7.4-redis 
+apt-get -y install php7.4-soap php7.4-solr php7.4-sqlite3 php7.4-ssh2 php7.4-uploadprogress 
+apt-get -y install php7.4-uuid php7.4-xdebug php7.4-xml php7.4-xmlrpc php7.4-xsl php7.4-yaml php7.4-zip
 wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php/fpm/pool.d/www.conf
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
