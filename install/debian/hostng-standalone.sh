@@ -9,8 +9,8 @@ systemctl restart sshd
 apt-get -y install apt-transport-https lsb-release ca-certificates curl
 curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-apt-get update
-apt-get -y install php7.4 php7.4-amqp php7.4-bcmath php7.4-bz2 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-fpm php7.4-gd php7.4-http php7.4-igbinary php7.4-imagick php7.4-imap php7.4-intl php7.4-json php7.4-ldap php7.4-mbstring php7.4-memcache php7.4-memcached php7.4-mongodb php7.4-mysql php7.4-oauth php7.4-odbc php7.4-opcache php7.4-phpdbg php7.4-psr php7.4-readline php7.4-redis php7.4-soap php7.4-solr php7.4-sqlite3 php7.4-ssh2 php7.4-uploadprogress php7.4-uuid php7.4-xdebug php7.4-xml php7.4-xmlrpc php7.4-xsl php7.4-yaml php7.4-zip
+apt-get -y update
+apt-get -y install php7.4-amqp php7.4-bcmath php7.4-bz2 php7.4-cli php7.4-common php7.4-curl php7.4-dev php7.4-fpm php7.4-gd php7.4-http php7.4-igbinary php7.4-imagick php7.4-imap php7.4-intl php7.4-json php7.4-ldap php7.4-mbstring php7.4-memcache php7.4-memcached php7.4-mongodb php7.4-mysql php7.4-oauth php7.4-odbc php7.4-opcache php7.4-phpdbg php7.4-psr php7.4-readline php7.4-redis php7.4-soap php7.4-solr php7.4-sqlite3 php7.4-ssh2 php7.4-uploadprogress php7.4-uuid php7.4-xdebug php7.4-xml php7.4-xmlrpc php7.4-xsl php7.4-yaml php7.4-zip
 wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php/fpm/pool.d/www.conf
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
@@ -19,7 +19,7 @@ apt-get -y install curl gnupg2 ca-certificates lsb-release
 echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list
 curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
-apt-get update
+apt-get -y update
 apt-get -y install nginx
 systemctl enable nginx
 mkdir /etc/nginx/sites-available
@@ -35,7 +35,7 @@ echo -e "\ntmpfs /var/cache/nginx tmpfs defaults,size=4G 0 0\n" >> /etc/fstab
 mount /var/cache/nginx
 systemctl restart nginx
 
-apt-get install mariadb-server
+apt-get -y install mariadb-server
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
 wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
 systemctl enable mariadb
@@ -44,7 +44,7 @@ mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' IDENTIFIED BY '********' WITH GRANT OPTION;"
 mysql -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%'"
-mysql -e "CREATE USER backup@localhost IDENTIFIED BY '********';"
+mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
@@ -62,3 +62,14 @@ wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/mas
 wget -O /etc/pam.d/vsftpd https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/pam.d/vsftpd
 systemctl enable vsftpd
 systemctl restart vsftpd
+
+apt-get -y install nftables
+wget -O /etc/nftables.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nftables/nftables.conf
+systemctl enable nftables
+systemctl restart nftables
+
+
+wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+buster_all.deb
+dpkg -i zabbix-release_5.0-1+buster_all.deb
+apt-get -y update
+apt-get -y install zabbix-agent
