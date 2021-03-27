@@ -1,11 +1,8 @@
 apt-get -y update
 apt-get -y upgrade
-
 apt-get -y install locales-all
-
 wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssh/sshd_config
 systemctl restart sshd
-
 apt-get -y install apt-transport-https lsb-release ca-certificates curl
 curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -16,8 +13,7 @@ systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
 
 apt-get -y install curl gnupg2 ca-certificates lsb-release
-echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
-    | tee /etc/apt/sources.list.d/nginx.list
+echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
 curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
 apt-get -y update
 apt-get -y install nginx
