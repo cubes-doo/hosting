@@ -1,8 +1,10 @@
 apt-get -y update
 apt-get -y upgrade
 apt-get -y install locales-all
+
 wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssh/sshd_config
 systemctl restart sshd
+
 apt-get -y install apt-transport-https lsb-release ca-certificates curl
 curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -43,7 +45,7 @@ wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubu
 systemctl enable mariadb
 systemctl restart mariadb
 mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
-mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' IDENTIFIED BY '********' WITH GRANT OPTION;"
+mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION;"
 mysql -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%'"
 mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
@@ -58,10 +60,13 @@ wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/c
 mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
 
-apt-get -y install vsftpd libpam-pwdfile
+apt-get -y install vsftpd libpam-pwdfile apache2-utils whois
 mkdir -p /etc/vsftpd/users
 wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/vsftpd.conf
 wget -O /etc/pam.d/vsftpd https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/pam.d/vsftpd
+wget -O /etc/vsftpd/ftp_users_passwd.sh https://raw.githubusercontent.com/cubes-doo/hosting/master/scripts/ftp_users_passwd.sh
+chmod +x /etc/vsftpd/ftp_users_passwd.sh
+touch /etc/vsftpd/users.passwd
 systemctl enable vsftpd
 systemctl restart vsftpd
 
@@ -75,3 +80,7 @@ wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix
 dpkg -i zabbix-release_5.0-1+buster_all.deb
 apt-get -y update
 apt-get -y install zabbix-agent
+mkdir /var/lib/zabbix
+echo -e "[client]\nuser='zabbix'\npassword='********'\n" > /var/lib/zabbix/.my.cnf
+chown -R zabbix: /var/lib/zabbix
+systemctl restart zabbix-agent
