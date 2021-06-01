@@ -1,0 +1,96 @@
+#!/bin/bash
+
+LOCAL_DB_BACKUP_FOLDER='/var/backups/db'
+REMOTE_DB_BACKUP_FOLDER='/backup/SERVER_NAME/db'
+REMOTE_FILES_BACKUP_FOLDER='/backup/SERVER_NAME/files'
+BACKUP_LOG_FILE='/var/log/server-backup.log';
+DOW=$(date +%u)
+
+# database backup
+# --------------
+echo "Starting 'server-db-backup' script ...";
+command /usr/local/bin/server-db-backup;
+stat=$?;
+
+if [ $stat != 0 ]; then
+	echo "FAIL: 'server-db-backup' script returned an error when trying to backup databases locally. Remote backup of databases is canceled.";
+else 
+	echo "Databases backed-up localy to $LOCAL_DB_BACKUP_FOLDER";
+
+	scp -P 2560 ${LOCAL_DB_BACKUP_FOLDER}/*-$DOW.sql.gz cubes@backup:$REMOTE_DB_BACKUP_FOLDER
+	stat=$?;
+
+	if [ $stat == 0 ]; then
+		echo "SUCCESS: Databases successfuly backed-up remotely";
+	else 
+		echo "FAIL: scp returned an error when trying to backup databases remotly";
+	fi
+fi
+
+# files backup
+# ------------
+# Setting this, so the repo does not need to be given on the commandline:
+export BORG_REPO="ssh://cubes@backup:2560$REMOTE_DB_BACKUP_FOLDER"
+
+export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
+
+# Setting this, so you won't be asked for your repository passphrase:
+export BORG_PASSPHRASE='********************************'
+# or this to ask an external program to supply the passphrase:
+#export BORG_PASSCOMMAND='pass show backup'
+
+# some helpers and error handling:
+info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
+trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
+
+info "Starting 'borg' backup"
+
+# Backup the most important directories into an archive named after
+# the machine this script is currently running on:
+
+/usr/bin/borg create                \
+    --verbose                       \
+    --filter AME                    \
+    --list                          \
+    --stats                         \
+    --show-rc                       \
+    --compression lz4               \
+    --exclude-caches                \
+    --exclude-if-present=.borgignore \
+				    \
+    ::'{hostname}-{now}'            \
+    /var/www/             	    \
+    2>> $BACKUP_LOG_FILE
+
+backup_exit=$?
+
+info "Pruning repository"
+
+# Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
+# archives of THIS machine. The '{hostname}-' prefix is very important to
+# limit prune's operation to this machine's archives and not apply to
+# other machines' archives also:
+
+/usr/bin/borg prune           \
+    --list                          \
+    --prefix '{hostname}-'          \
+    --show-rc                       \
+    --keep-daily    7               \
+    --keep-weekly   4               \
+    --keep-monthly  6               \
+    2>> $BACKUP_LOG_FILE
+
+prune_exit=$?
+
+# use highest exit code as global exit code
+global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
+
+if [ ${global_exit} -eq 0 ]; then
+    info "Backup and Prune finished successfully"
+elif [ ${global_exit} -eq 1 ]; then
+    info "Backup and/or Prune finished with warnings"
+else
+    info "Backup and/or Prune finished with errors"
+fi
+
+exit ${global_exit}
