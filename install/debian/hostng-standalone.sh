@@ -85,4 +85,5 @@ apt-get -y install zabbix-agent
 mkdir /var/lib/zabbix
 echo -e "[client]\nuser='zabbix'\npassword='********'\n" > /var/lib/zabbix/.my.cnf
 chown -R zabbix: /var/lib/zabbix
+wget -O /etc/zabbix/zabbix_agent.d/template_db_mysql.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_agent.d/template_db_mysql.conf
 systemctl restart zabbix-agent
