@@ -30,7 +30,7 @@ fi
 # files backup
 # ------------
 # Setting this, so the repo does not need to be given on the commandline:
-export BORG_REPO="ssh://cubes@backup:2560$REMOTE_DB_BACKUP_FOLDER"
+export BORG_REPO="ssh://cubes@backup:2560$REMOTE_FILES_BACKUP_FOLDER"
 
 export BORG_UNKNOWN_UNENCRYPTED_REPO_ACCESS_IS_OK=yes
 
