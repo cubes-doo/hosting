@@ -9,7 +9,7 @@ tmp_memory_table_size=2G
 max_heap_table_size=2G
 
 #innodb tunning
-innodb_buffer_pool_size		= 100M
+innodb_buffer_pool_size		= 50M
 innodb_log_file_size		= 4M	
 innodb_file_per_table		= 1
 innodb_log_buffer_size 		= 1M
