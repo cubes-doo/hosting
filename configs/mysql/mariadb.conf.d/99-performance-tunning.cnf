@@ -1,7 +1,7 @@
 [mysqld]
 #general tunning
 skip_name_resolve
-max_connections			= 3000
+max_connections                 = 3000
 
 #tmp table tunning
 tmp_table_size=2G
@@ -9,10 +9,10 @@ tmp_memory_table_size=2G
 max_heap_table_size=2G
 
 #innodb tunning
-innodb_buffer_pool_size		= 50M
-innodb_log_file_size		= 4M	
-innodb_file_per_table		= 1
-innodb_log_buffer_size 		= 1M
+innodb_buffer_pool_size         = 16G
+innodb_log_file_size            = 1024M
+innodb_file_per_table           = 1
+innodb_log_buffer_size          = 64M
 
 wait_timeout=30
 interactive_timeout = 300
