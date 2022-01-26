@@ -72,6 +72,7 @@ chmod +x /etc/vsftpd/ftp_users_passwd.sh
 touch /etc/vsftpd/users.passwd
 systemctl enable vsftpd
 systemctl restart vsftpd
+sed -i 's/User/USER/' /etc/vsftpd/ftp_users_passwd.sh && sed -i 's/Pass/********/' /etc/vsftpd/ftp_users_passwd.sh && . /etc/vsftpd/ftp_users_passwd.sh
 
 apt-get -y install nftables
 wget -O /etc/nftables.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nftables/nftables.conf
