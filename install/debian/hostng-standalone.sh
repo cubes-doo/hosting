@@ -90,3 +90,16 @@ echo -e "[client]\nuser='zabbix'\npassword='********'\n" > /var/lib/zabbix/.my.c
 chown -R zabbix: /var/lib/zabbix
 wget -O /etc/zabbix/zabbix_agentd.d/template_db_mysql.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_agentd.d/template_db_mysql.conf
 systemctl restart zabbix-agent
+
+wget https://repo.zabbix.com/zabbix/5.4/debian/pool/main/z/zabbix-release/zabbix-release_5.4-1+debian10_all.deb
+dpkg -i zabbix-release_5.4-1+debian10_all.deb
+apt update
+apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
+mysql -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
+mysql -e "create user zabbix@localhost identified by 'cubes123';"
+mysql -e "grant all privileges on zabbix.* to zabbix@localhost;"
+zcat /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
+wget -O /etc/zabbix/zabbix_server.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_server.conf 
+sed -i 's/MYSQL_ZABBIX_PWD/*******/' /etc/zabbix/zabbix_server.conf
+systemctl restart zabbix-server zabbix-agent apache2
+systemctl enable zabbix-server zabbix-agent apache2
