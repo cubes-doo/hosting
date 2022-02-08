@@ -1,0 +1,56 @@
+- name: Configure webserver with nginx
+  hosts: webservers
+  become: True
+  tasks:
+  
+    - name: install nginx
+      apt: name=nginx update_cache=yes
+
+    - name: copy nginx config file
+      copy: src=/root/templates/WEBSITE.conf dest=/etc/nginx/sites-available/WEBSITE.rs.conf
+
+    - name: enable configuration
+      file: >
+        dest=/etc/nginx/sites-enabled/WEBSITE.conf
+        src=/etc/nginx/sites-available/WEBSITE.conf
+        state=link
+    
+    - name: Creates directory WEBSITE
+      file:
+        path: /var/www/WEBSITE
+        state: directory
+        owner: root
+        group: root
+
+    - name: Creates directory www-root
+      file:
+        path: /var/www/WEBSITE/www-root
+        state: directory
+        owner: cubes
+        group: cubes
+
+    - name: Creates directory logs
+      file:
+        path: /var/www/WEBSITE/logs
+        state: directory
+        owner: root
+        group: root
+
+    - name: Creates directory data
+      file:
+        path: /var/www/WEBSITE/www-root/data
+        state: directory
+        owner: cubes
+        group: cubes
+
+    - name: Creates directory public
+      file:
+        path: /var/www/WEBSITE/www-root/public
+        state: directory
+        owner: cubes
+        group: cubes
+
+    - name: reload nginx
+      service: name=nginx state=reloaded
+
+
