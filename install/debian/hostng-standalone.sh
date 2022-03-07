@@ -54,14 +54,16 @@ mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
-wget https://files.phpmyadmin.net/phpMyAdmin/5.1.1/phpMyAdmin-5.1.1-all-languages.tar.gz
-tar -xzf phpMyAdmin-5.1.1-all-languages.tar.gz
-mv phpMyAdmin-5.1.1-all-languages /usr/share/phpmyadmin
-rm phpMyAdmin-5.1.1-all-languages.tar.gz
+wget https://files.phpmyadmin.net/phpMyAdmin/5.1.2/phpMyAdmin-5.1.2-all-languages.tar.gz
+tar -xzf phpMyAdmin-5.1.2-all-languages.tar.gz
+mv phpMyAdmin-5.1.2-all-languages /usr/share/phpmyadmin
+rm phpMyAdmin-5.1.2-all-languages.tar.gz
 wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
 wget -O /etc/nginx/conf.d/phpmyadmin.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/phpmyadmin.conf
 mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
+rm -rf /etc/nginx/conf.d/default.conf
+systemctl reload nginx
 
 apt-get -y install vsftpd libpam-pwdfile apache2-utils whois
 mkdir -p /etc/vsftpd/users
