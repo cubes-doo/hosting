@@ -105,3 +105,9 @@ wget -O /etc/zabbix/zabbix_server.conf https://raw.githubusercontent.com/cubes-d
 sed -i 's/MYSQL_ZABBIX_PWD/*******/' /etc/zabbix/zabbix_server.conf
 systemctl restart zabbix-server zabbix-agent apache2
 systemctl enable zabbix-server zabbix-agent apache2
+
+apt-get -y update
+apt-get -y install snapd
+snap install core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
