@@ -6,7 +6,7 @@ DOMAIN="mydomain.com"
 mkdir -p /var/www/$DOMAIN
 mkdir -p /var/www/$DOMAIN/www-root && mkdir -p /var/www/$DOMAIN/logs
 touch /var/www/$DOMAIN/logs/.borgignore
-mkdir -p /var/www/$DOMAIN/www-root/piblic
+mkdir -p /var/www/$DOMAIN/www-root/public
 chown -R cubes: /var/www/$DOMAIN/www-root
 
 touch /etc/nginx/sites-available/$DOMAIN.conf
