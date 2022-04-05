@@ -17,3 +17,5 @@ sed -i 's/www.WEBSITE/www.mydomain.com/' /etc/nginx/sites-available/$DOMAIN.conf
 cd /etc/nginx/sites-enabled
 ln -s ../sites-available/$DOMAIN.conf
 systemctl reload nginx
+
+wget -O /var/www/$DOMAIN/www-root/public/index.php https://raw.githubusercontent.com/cubes-doo/hosting/master/files/index.php
