@@ -18,7 +18,7 @@ apt-get -y install php7.4-soap php7.4-solr php7.4-sqlite3 php7.4-ssh2 php7.4-upl
 apt-get -y install php7.4-uuid php7.4-xdebug php7.4-xml php7.4-xmlrpc php7.4-xsl php7.4-yaml php7.4-zip
 apt-get -y install php7.4-propro php7.4-raphf
 apt-get -y install php7.4-mysql
-wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php/fpm/pool.d/www.conf
+wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php7.4/fpm/pool.d/www.conf
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
 
@@ -83,8 +83,8 @@ systemctl enable nftables
 systemctl restart nftables
 
 
-wget https://repo.zabbix.com/zabbix/5.0/debian/pool/main/z/zabbix-release/zabbix-release_5.0-1+buster_all.deb
-dpkg -i zabbix-release_5.0-1+buster_all.deb
+wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1+debian10_all.deb
+dpkg -i zabbix-release_6.0-1+debian10_all.deb
 apt-get -y update
 apt-get -y install zabbix-agent
 mkdir /var/lib/zabbix
@@ -93,12 +93,12 @@ chown -R zabbix: /var/lib/zabbix
 wget -O /etc/zabbix/zabbix_agentd.d/template_db_mysql.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_agentd.d/template_db_mysql.conf
 systemctl restart zabbix-agent
 
-wget https://repo.zabbix.com/zabbix/5.4/debian/pool/main/z/zabbix-release/zabbix-release_5.4-1+debian10_all.deb
-dpkg -i zabbix-release_5.4-1+debian10_all.deb
-apt update
+wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1+debian10_all.deb
+dpkg -i zabbix-release_6.0-1+debian10_all.deb
+apt-get -y update
 apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
 mysql -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
-mysql -e "create user zabbix@localhost identified by 'cubes123';"
+mysql -e "create user zabbix@localhost identified by '********';"
 mysql -e "grant all privileges on zabbix.* to zabbix@localhost;"
 zcat /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
 wget -O /etc/zabbix/zabbix_server.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_server.conf 
