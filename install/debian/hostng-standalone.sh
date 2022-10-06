@@ -16,7 +16,7 @@ apt-get -y install php8.1-odbc php8.1-opcache php8.1-phpdbg php8.1-psr php8.1-re
 apt-get -y install php8.1-soap php8.1-solr php8.1-sqlite3 php8.1-ssh2 php8.1-uploadprogress 
 apt-get -y install php8.1-uuid php8.1-xdebug php8.1-xml php8.1-xmlrpc php8.1-xsl php8.1-yaml php8.1-zip
 apt-get -y install php8.1-propro php8.1-raphf
-apt-get -y install php8.1-mysql
+apt-get -y install php8.1-mysql php8.1-mbstring
 wget -O /etc/php/8.1/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php8.1/fpm/pool.d/www.conf
 systemctl enable php8.1-fpm
 systemctl restart php8.1-fpm
