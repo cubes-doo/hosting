@@ -5,22 +5,6 @@ apt-get -y install locales-all
 wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssh/sshd_config
 systemctl restart sshd
 
-apt-get -y install apt-transport-https lsb-release ca-certificates curl
-apt-get -y update
-apt install -y --no-install-recommends php8.1
-apt-get -y install php8.1-amqp php8.1-bcmath php8.1-bz2 php8.1-cli php8.1-common 
-apt-get -y install php8.1-curl php8.1-dev php8.1-fpm php8.1-gd php8.1-http php8.1-igbinary 
-apt-get -y install php8.1-imagick php8.1-imap php8.1-intl php8.1-json php8.1-ldap php8.1-mbstring 
-apt-get -y install php8.1-memcache php8.1-memcached php8.1-mongodb php8.1-mysql php8.1-oauth 
-apt-get -y install php8.1-odbc php8.1-opcache php8.1-phpdbg php8.1-psr php8.1-readline php8.1-redis 
-apt-get -y install php8.1-soap php8.1-solr php8.1-sqlite3 php8.1-ssh2 php8.1-uploadprogress 
-apt-get -y install php8.1-uuid php8.1-xdebug php8.1-xml php8.1-xmlrpc php8.1-xsl php8.1-yaml php8.1-zip
-apt-get -y install php8.1-propro php8.1-raphf
-apt-get -y install php8.1-mysql php8.1-mbstring
-wget -O /etc/php/8.1/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php8.1/fpm/pool.d/www.conf
-systemctl enable php8.1-fpm
-systemctl restart php8.1-fpm
-
 apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
@@ -40,6 +24,23 @@ wget -O /usr/share/nginx/html/index.html https://raw.githubusercontent.com/cubes
 echo -e "\ntmpfs /var/cache/nginx tmpfs defaults,size=4G 0 0\n" >> /etc/fstab
 mount /var/cache/nginx
 systemctl restart nginx
+
+apt-get -y update
+apt-get -y install lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
+curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+apt-get install -y install php8.1
+apt-get -y install php8.1-amqp php8.1-bcmath php8.1-bz2 php8.1-cli php8.1-common 
+apt-get -y install php8.1-curl php8.1-dev php8.1-fpm php8.1-gd php8.1-http php8.1-igbinary 
+apt-get -y install php8.1-imagick php8.1-imap php8.1-intl php8.1-ldap php8.1-mbstring 
+apt-get -y install php8.1-memcache php8.1-memcached php8.1-mongodb php8.1-mysql php8.1-oauth 
+apt-get -y install php8.1-odbc php8.1-opcache php8.1-phpdbg php8.1-psr php8.1-readline php8.1-redis 
+apt-get -y install php8.1-soap php8.1-solr php8.1-sqlite3 php8.1-ssh2 php8.1-uploadprogress 
+apt-get -y install php8.1-uuid php8.1-xdebug php8.1-xml php8.1-xmlrpc php8.1-xsl php8.1-yaml php8.1-zip
+apt-get -y install php8.1-pro php8.1-raphf
+wget -O /etc/php/8.1/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php8.1/fpm/pool.d/www.conf
+systemctl enable php8.1-fpm
+systemctl restart php8.1-fpm
 
 apt-get -y install mariadb-server
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
@@ -81,7 +82,6 @@ apt-get -y install nftables
 wget -O /etc/nftables.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nftables/nftables.conf
 systemctl enable nftables
 systemctl restart nftables
-
 
 wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1+debian10_all.deb
 dpkg -i zabbix-release_6.0-1+debian10_all.deb
