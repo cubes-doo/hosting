@@ -43,7 +43,14 @@ wget -O /etc/php/8.1/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes
 systemctl enable php8.1-fpm
 systemctl restart php8.1-fpm
 
-apt-get -y install mariadb-server
+apt-get -y install curl apt-transport-https wget -y
+wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
+echo "6528c910e9b5a6ecd3b54b50f419504ee382e4bdc87fa333a0b0fcd46ca77338 mariadb_repo_setup" \
+       | sha256sum -c -
+chmod +x mariadb_repo_setup
+sudo ./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
+sudo apt update
+apt-get -y install mariadb-server mariadb-backup
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
 wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
 systemctl enable mariadb
@@ -101,7 +108,7 @@ apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix
 mysql -e "create database zabbix character set utf8mb4 collate utf8mb4_bin;"
 mysql -e "create user zabbix@localhost identified by '********';"
 mysql -e "grant all privileges on zabbix.* to zabbix@localhost;"
-zcat /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
+zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
 wget -O /etc/zabbix/zabbix_server.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_server.conf 
 sed -i 's/MYSQL_ZABBIX_PWD/*******/' /etc/zabbix/zabbix_server.conf
 systemctl restart zabbix-server zabbix-agent apache2
