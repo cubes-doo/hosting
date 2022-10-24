@@ -58,7 +58,7 @@ systemctl restart mariadb
 mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION;"
 mysql -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '********';"
-mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%'"
+mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%';"
 mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
