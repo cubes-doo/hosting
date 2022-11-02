@@ -44,11 +44,9 @@ systemctl restart php8.1-fpm
 
 apt-get -y install curl apt-transport-https wget -y
 wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-echo "6528c910e9b5a6ecd3b54b50f419504ee382e4bdc87fa333a0b0fcd46ca77338 mariadb_repo_setup" \
-       | sha256sum -c -
 chmod +x mariadb_repo_setup
-sudo ./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
-sudo apt update
+./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
+apt-get -y update
 apt-get -y install mariadb-server mariadb-backup
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
 wget -O /etc/mysql/mariadb.conf.d/99-performance-tunning.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/mariadb.conf.d/99-performance-tunning.cnf
