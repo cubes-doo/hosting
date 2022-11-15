@@ -29,7 +29,7 @@ apt-get -y install lsb-release ca-certificates apt-transport-https software-prop
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
 curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
 apt-get -y update
-apt-get install -y install php8.1
+apt-get install -y php8.1
 apt-get -y install php8.1-amqp php8.1-bcmath php8.1-bz2 php8.1-cli php8.1-common 
 apt-get -y install php8.1-curl php8.1-dev php8.1-fpm php8.1-gd php8.1-http php8.1-igbinary 
 apt-get -y install php8.1-imagick php8.1-imap php8.1-intl php8.1-ldap php8.1-mbstring 
