@@ -29,15 +29,7 @@ apt-get -y install lsb-release ca-certificates apt-transport-https software-prop
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
 curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
 apt-get -y update
-apt-get install -y php8.1
-apt-get -y install php8.1-amqp php8.1-bcmath php8.1-bz2 php8.1-cli php8.1-common 
-apt-get -y install php8.1-curl php8.1-dev php8.1-fpm php8.1-gd php8.1-http php8.1-igbinary 
-apt-get -y install php8.1-imagick php8.1-imap php8.1-intl php8.1-ldap php8.1-mbstring 
-apt-get -y install php8.1-memcache php8.1-memcached php8.1-mongodb php8.1-mysql php8.1-oauth 
-apt-get -y install php8.1-odbc php8.1-opcache php8.1-phpdbg php8.1-psr php8.1-readline php8.1-redis 
-apt-get -y install php8.1-soap php8.1-solr php8.1-sqlite3 php8.1-ssh2 php8.1-uploadprogress 
-apt-get -y install php8.1-uuid php8.1-xdebug php8.1-xml php8.1-xmlrpc php8.1-xsl php8.1-yaml php8.1-zip
-apt-get -y install php8.1-pro php8.1-raphf
+apt-get install -y php8.1-{amqp,bcmath,bz2,cli,common,amqp,bcmath,bz2,cli,common,curl,dev,fpm,gd,http,igbinary,imagick,imap,intl,ldap,mbstring,memcache,memcached,mongodb,mysql,oauth,odbc,opcache,phpdbg,psr,readline,redis,soap,solr,sqlite3,ssh2,uploadprogress,uuid,xdebug,xml,xmlrpc,xsl,yaml,zi,pro,raphf}
 wget -O /etc/php/8.1/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php8.1/fpm/pool.d/www.conf
 systemctl enable php8.1-fpm
 systemctl restart php8.1-fpm
