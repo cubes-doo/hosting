@@ -31,6 +31,7 @@ curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/tru
 apt-get -y update
 apt-get install -y php7.4-{amqp,bcmath,bz2,cli,common,amqp,bcmath,bz2,cli,common,curl,dev,fpm,gd,http,igbinary,imagick,imap,intl,ldap,mbstring,memcache,memcached,mongodb,mysql,oauth,odbc,opcache,phpdbg,psr,readline,redis,soap,solr,sqlite3,ssh2,uploadprogress,uuid,xdebug,xml,xmlrpc,xsl,yaml,zi,pro,raphf}
 wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php7.4/fpm/pool.d/www.conf
+mkdir /var/log/php7.4-fpm
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
 
