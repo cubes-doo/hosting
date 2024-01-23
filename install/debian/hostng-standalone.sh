@@ -53,10 +53,10 @@ mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
-wget https://files.phpmyadmin.net/phpMyAdmin/5.2.0/phpMyAdmin-5.2.0-all-languages.tar.gz
-tar -xzf phpMyAdmin-5.2.0-all-languages.tar.gz
-mv phpMyAdmin-5.2.0-all-languages /usr/share/phpmyadmin
-rm phpMyAdmin-5.2.0-all-languages.tar.gz
+wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.tar.gz
+tar -xzf phpMyAdmin-5.2.1-all-languages.tar.gz
+mv phpMyAdmin-5.2.1-all-languages /usr/share/phpmyadmin
+rm phpMyAdmin-5.2.1-all-languages.tar.gz
 wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
 wget -O /etc/nginx/conf.d/phpmyadmin.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/phpmyadmin.conf
 mkdir /usr/share/phpmyadmin/tmp
