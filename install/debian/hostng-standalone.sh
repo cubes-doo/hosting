@@ -63,7 +63,6 @@ wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/c
 wget -O /etc/nginx/conf.d/phpmyadmin.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/phpmyadmin.conf
 mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
-rm -rf /etc/nginx/conf.d/default.conf
 systemctl reload nginx
 
 apt-get -y install vsftpd libpam-pwdfile apache2-utils whois
