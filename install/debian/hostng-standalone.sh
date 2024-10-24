@@ -82,8 +82,8 @@ wget -O /etc/nftables.conf https://raw.githubusercontent.com/cubes-doo/hosting/m
 systemctl enable nftables
 systemctl restart nftables
 
-wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1+debian10_all.deb
-dpkg -i zabbix-release_6.0-1+debian10_all.deb
+wget https://repo.zabbix.com/zabbix/6.4/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian12_all.deb
+dpkg -i zabbix-release_latest+debian12_all.deb
 apt-get -y update
 apt-get -y install zabbix-agent
 mkdir /var/lib/zabbix
