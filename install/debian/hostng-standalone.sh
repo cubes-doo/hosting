@@ -110,3 +110,5 @@ apt-get -y install snapd
 snap install core
 snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
+
+db.createUser({user: "USERNAME_HERE", pwd: "PASSWORD_HERE", roles: [{ role: "dbAdmin", db: "DB_NAME_HERE" }]})
