@@ -1,16 +1,27 @@
+# inicial update
 apt-get -y update
 apt-get -y upgrade
 apt-get -y install locales-all
 
+# set sshd
 wget -O /etc/ssh/sshd_config https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/ssh/sshd_config
 systemctl restart sshd
 
+# set timezone
 timedatectl set-timezone Europe/Belgrade
 
-apt install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring
-curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
-echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] http://nginx.org/packages/debian `lsb_release -cs` nginx" | tee /etc/apt/sources.list.d/nginx.list
-echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" | tee /etc/apt/preferences.d/99nginx
+# install nginx
+apt update && \
+apt install curl \
+                 gnupg2 \
+                 ca-certificates \
+                 lsb-release \
+                 debian-archive-keyring
+curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
+http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+    | tee /etc/apt/sources.list.d/nginx.list
 apt-get -y update
 apt-get -y install nginx
 systemctl enable nginx
@@ -27,6 +38,7 @@ echo -e "\ntmpfs /var/cache/nginx tmpfs defaults,size=4G 0 0\n" >> /etc/fstab
 mount /var/cache/nginx
 systemctl restart nginx
 
+# install php
 apt-get -y install lsb-release ca-certificates apt-transport-https software-properties-common gnupg2
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
 curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
@@ -37,6 +49,7 @@ mkdir /var/log/php7.4-fpm
 systemctl enable php7.4-fpm
 systemctl restart php7.4-fpm
 
+# install mysql
 apt-get -y install curl apt-transport-https wget -y
 wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
 chmod +x mariadb_repo_setup
@@ -55,6 +68,7 @@ mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
+# install phpmyadmin
 wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.tar.gz
 tar -xzf phpMyAdmin-5.2.1-all-languages.tar.gz
 mv phpMyAdmin-5.2.1-all-languages /usr/share/phpmyadmin
@@ -65,6 +79,7 @@ mkdir /usr/share/phpmyadmin/tmp
 chmod 777 /usr/share/phpmyadmin/tmp
 systemctl reload nginx
 
+# install ftp
 apt-get -y install vsftpd libpam-pwdfile apache2-utils whois
 mkdir -p /etc/vsftpd/users
 wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/vsftpd.conf
@@ -77,11 +92,13 @@ systemctl restart vsftpd
 sed -i 's/User/USER/' /etc/vsftpd/ftp_users_passwd.sh && sed -i 's/Pass/********/' /etc/vsftpd/ftp_users_passwd.sh
 . /etc/vsftpd/ftp_users_passwd.sh
 
+# install nftables
 apt-get -y install nftables
 wget -O /etc/nftables.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nftables/nftables.conf
 systemctl enable nftables
 systemctl restart nftables
 
+# install zabbix agent
 wget https://repo.zabbix.com/zabbix/6.4/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian12_all.deb
 dpkg -i zabbix-release_latest+debian12_all.deb
 apt-get -y update
@@ -92,6 +109,7 @@ chown -R zabbix: /var/lib/zabbix
 wget -O /etc/zabbix/zabbix_agentd.d/template_db_mysql.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/zabbix/zabbix_agentd.d/template_db_mysql.conf
 systemctl restart zabbix-agent
 
+# install zabbix server
 wget https://repo.zabbix.com/zabbix/6.0/debian/pool/main/z/zabbix-release/zabbix-release_6.0-1+debian10_all.deb
 dpkg -i zabbix-release_6.0-1+debian10_all.deb
 apt-get -y update
@@ -105,10 +123,12 @@ sed -i 's/MYSQL_ZABBIX_PWD/*******/' /etc/zabbix/zabbix_server.conf
 systemctl restart zabbix-server zabbix-agent apache2
 systemctl enable zabbix-server zabbix-agent apache2
 
+# install certbot for ssl
 apt-get -y update
 apt-get -y install snapd
 snap install core
 snap install --classic certbot
 ln -s /snap/bin/certbot /usr/bin/certbot
 
+# create user and database for mongo
 db.createUser({user: "USERNAME_HERE", pwd: "PASSWORD_HERE", roles: [{ role: "dbAdmin", db: "DB_NAME_HERE" }]})
