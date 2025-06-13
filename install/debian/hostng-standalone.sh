@@ -99,7 +99,7 @@ systemctl enable nftables
 systemctl restart nftables
 
 # install zabbix agent
-wget https://repo.zabbix.com/zabbix/6.4/debian/pool/main/z/zabbix-release/zabbix-release_latest+debian12_all.deb
+wget https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb
 dpkg -i zabbix-release_latest+debian12_all.deb
 apt-get -y update
 apt-get -y install zabbix-agent
