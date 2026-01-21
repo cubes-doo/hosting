@@ -16,12 +16,14 @@ apt install curl \
                  gnupg2 \
                  ca-certificates \
                  lsb-release \
-                 debian-archive-keyring
+                 debian-archive-keyring 
 curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
      | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
 echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \
-http://nginx.org/packages/debian `lsb_release -cs` nginx" \
+https://nginx.org/packages/debian `lsb_release -cs` nginx" \
     | tee /etc/apt/sources.list.d/nginx.list
+echo -e "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+   | tee /etc/apt/preferences.d/99nginx
 apt-get -y update
 apt-get -y install nginx
 systemctl enable nginx
@@ -34,8 +36,6 @@ wget -O /etc/nginx/conf.d/default.conf https://raw.githubusercontent.com/cubes-d
 wget -O /etc/nginx/conf.d/status.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/status.conf
 wget -O /etc/nginx/conf.d/fastcgi_cache.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/fastcgi_cache.conf
 wget -O /usr/share/nginx/html/index.html https://raw.githubusercontent.com/cubes-doo/hosting/master/files/index.html
-echo -e "\ntmpfs /var/cache/nginx tmpfs defaults,size=4G 0 0\n" >> /etc/fstab
-mount /var/cache/nginx
 systemctl restart nginx
 
 # install php
@@ -43,11 +43,11 @@ apt-get -y install lsb-release ca-certificates apt-transport-https software-prop
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
 curl -fsSL  https://packages.sury.org/php/apt.gpg| gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
 apt-get -y update
-apt-get install -y php7.4-{amqp,bcmath,bz2,cli,common,amqp,bcmath,bz2,cli,common,curl,dev,fpm,gd,http,igbinary,imagick,imap,intl,ldap,mbstring,memcache,memcached,mongodb,mysql,oauth,odbc,opcache,phpdbg,readline,redis,soap,solr,sqlite3,ssh2,uploadprogress,uuid,xdebug,xml,xmlrpc,xsl,yaml,zi,pro,raphf}
-wget -O /etc/php/7.4/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php7.4/fpm/pool.d/www.conf
-mkdir /var/log/php7.4-fpm
-systemctl enable php7.4-fpm
-systemctl restart php7.4-fpm
+apt-get install -y php8.3-{amqp,bcmath,bz2,cli,common,amqp,bcmath,bz2,cli,common,curl,dev,fpm,gd,http,igbinary,imagick,imap,intl,ldap,mbstring,memcache,memcached,mongodb,mysql,oauth,odbc,opcache,phpdbg,readline,redis,soap,solr,sqlite3,ssh2,uploadprogress,uuid,xdebug,xml,xmlrpc,xsl,yaml,zi,pro,raphf}
+wget -O /etc/php/8.3/fpm/pool.d/www.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/php8.3/fpm/pool.d/www.conf
+mkdir /var/log/php8.3-fpm
+systemctl enable php8.3-fpm
+systemctl restart php8.3-fpm
 
 # install mysql
 apt-get -y install curl apt-transport-https wget -y
@@ -69,10 +69,10 @@ mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT,
 mysql -e "FLUSH PRIVILEGES;"
 
 # install phpmyadmin
-wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.tar.gz
-tar -xzf phpMyAdmin-5.2.1-all-languages.tar.gz
-mv phpMyAdmin-5.2.1-all-languages /usr/share/phpmyadmin
-rm phpMyAdmin-5.2.1-all-languages.tar.gz
+wget https://files.phpmyadmin.net/phpMyAdmin/5.2.3/phpMyAdmin-5.2.3-all-languages.tar.gz
+tar -xzf phpMyAdmin-5.2.3-all-languages.tar.gz
+mv phpMyAdmin-5.2.3-all-languages /usr/share/phpmyadmin
+rm phpMyAdmin-5.2.3-all-languages.tar.gz
 wget -O /usr/share/phpmyadmin/config.inc.php https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/phpmyadmin/config.inc.php
 wget -O /etc/nginx/conf.d/phpmyadmin.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/nginx/conf.d/phpmyadmin.conf
 mkdir /usr/share/phpmyadmin/tmp
@@ -99,8 +99,8 @@ systemctl enable nftables
 systemctl restart nftables
 
 # install zabbix agent
-wget https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb
-dpkg -i zabbix-release_latest+debian12_all.deb
+wget https://repo.zabbix.com/zabbix/7.4/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.4+debian12_all.deb
+dpkg -i zabbix-release_latest_7.4+debian12_all.deb
 apt-get -y update
 apt-get -y install zabbix-agent
 mkdir /var/lib/zabbix
