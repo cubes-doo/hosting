@@ -142,3 +142,4 @@ systemctl restart mongod
 
 # create user and database on mongo
 db.createUser({user: "USERNAME_HERE", pwd: "PASSWORD_HERE", roles: [{ role: "dbAdmin", db: "DB_NAME_HERE" }]})
+db.createUser({user: "admin", pwd: "jaka_lozinka", roles: [ { role: "root", db: "admin" }]})
