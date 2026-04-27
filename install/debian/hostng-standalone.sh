@@ -11,8 +11,8 @@ systemctl restart sshd
 timedatectl set-timezone Europe/Belgrade
 
 # install nginx
-apt update && \
-apt install curl \
+apt-get -y update && \
+apt-get -y install curl \
                  gnupg2 \
                  ca-certificates \
                  lsb-release \
