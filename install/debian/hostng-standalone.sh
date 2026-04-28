@@ -145,6 +145,7 @@ db.createUser({user: "USERNAME_HERE", pwd: "PASSWORD_HERE", roles: [{ role: "dbA
 db.createUser({user: "admin", pwd: "jaka_lozinka", roles: [ { role: "root", db: "admin" }]})
 
 # install alloy for grafana
+mkdir /etc/apt/keyrings
 wget -O /etc/apt/keyrings/grafana.asc https://apt.grafana.com/gpg-full.key
 chmod 644 /etc/apt/keyrings/grafana.asc
 echo "deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com stable main" | tee /etc/apt/sources.list.d/grafana.list
