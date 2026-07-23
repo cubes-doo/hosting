@@ -1,7 +1,7 @@
 [mysqld]
 #general tunning
 skip_name_resolve
-max_connections                 = 3000
+max_connections                 = 300
 
 #tmp table tunning
 tmp_table_size=2G
