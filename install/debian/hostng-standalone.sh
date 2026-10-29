@@ -43,9 +43,6 @@ systemctl restart php8.3-fpm
 
 # install mysql
 apt-get -y install curl apt-transport-https wget -y
-wget https://downloads.mariadb.com/MariaDB/mariadb_repo_setup
-chmod +x mariadb_repo_setup
-./mariadb_repo_setup --mariadb-server-version="mariadb-10.5"
 apt-get -y update
 apt-get -y install mariadb-server mariadb-backup
 wget -O /etc/mysql/my.cnf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/mysql/my.cnf
@@ -56,7 +53,7 @@ mysql -e "CREATE USER 'phpmyadmin'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'phpmyadmin'@'%' WITH GRANT OPTION;"
 mysql -e "CREATE USER 'zabbix'@'%' IDENTIFIED BY '********';"
 mysql -e "GRANT PROCESS, SHOW DATABASES, REPLICATION CLIENT, SHOW VIEW ON *.* TO 'zabbix'@'%';"
-mysql -e "CREATE USER backup@localhost IDENTIFIED BY 'CUBbackup';"
+mysql -e "CREATE USER backup@localhost IDENTIFIED BY '*********';"
 mysql -e "GRANT SELECT, RELOAD, SHOW DATABASES, LOCK TABLES, REPLICATION CLIENT, SHOW VIEW, TRIGGER ON *.* TO 'backup'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
