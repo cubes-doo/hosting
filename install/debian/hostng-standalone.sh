@@ -73,13 +73,11 @@ apt-get -y install vsftpd libpam-pwdfile apache2-utils whois
 mkdir -p /etc/vsftpd/users
 wget -O /etc/vsftpd.conf https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/vsftpd.conf
 wget -O /etc/pam.d/vsftpd https://raw.githubusercontent.com/cubes-doo/hosting/master/configs/vsftpd/pam.d/vsftpd
-wget -O /etc/vsftpd/ftp_users_passwd.sh https://raw.githubusercontent.com/cubes-doo/hosting/master/scripts/ftp_users_passwd.sh
-chmod +x /etc/vsftpd/ftp_users_passwd.sh
+wget -O /etc/vsftpd/mk_users_passwd.sh https://raw.githubusercontent.com/cubes-doo/hosting/master/scripts/mk_users_passwd.sh
+chmod +x /etc/vsftpd/mk_users_passwd.sh
 touch /etc/vsftpd/users.passwd
 systemctl enable vsftpd
 systemctl restart vsftpd
-sed -i 's/User/USER/' /etc/vsftpd/ftp_users_passwd.sh && sed -i 's/Pass/********/' /etc/vsftpd/ftp_users_passwd.sh
-. /etc/vsftpd/ftp_users_passwd.sh
 
 # install nftables
 apt-get -y install nftables
